@@ -1,0 +1,22 @@
+#! /bin/bash
+
+if [ $# -eq 0 ] ; then
+    echo "Usage: $0 <database>[, <database>[, <database>]]"
+    exit 1
+fi
+
+dbs=("${@}")
+
+for db in "${dbs[@]}"
+do
+    cleandb=$(echo $db | sed -e 's/^www.//g' | sed -e 's/.com\|.net\|.org$//g' | sed -e 's/[\.-]/_/g')
+    echo "Creating database ($cleandb)"
+    echo "create database \`$cleandb\`;" | mysql
+
+    echo "Cloning DB ($db) into DB ($cleandb)"
+    mysqldump $db | mysql $cleandb
+
+    echo "Dropping DB ($db)"
+    echo "drop database \`$db\`;" | mysql
+done
+

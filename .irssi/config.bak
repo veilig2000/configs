@@ -1,0 +1,218 @@
+servers = (
+  { address = "irc.ubuntu.com"; chatnet = "Ubuntu"; port = "8001"; },
+  { address = "eu.irc6.net"; chatnet = "IRCnet"; port = "6667"; },
+  { 
+    address = "irc.open-ircnet.net";
+    chatnet = "IRCnet";
+    port = "6667";
+  },
+  { address = "irc.efnet.org"; chatnet = "EFNet"; port = "6667"; },
+  { 
+    address = "irc.undernet.org";
+    chatnet = "Undernet";
+    port = "6667";
+  },
+  { address = "irc.dal.net"; chatnet = "DALnet"; port = "6667"; },
+  { 
+    address = "irc.quakenet.org";
+    chatnet = "QuakeNet";
+    port = "6667";
+  },
+  { address = "irc.oftc.net"; chatnet = "OFTC"; port = "6667"; },
+  {
+    address = "irc.gamesurge.net";
+    chatnet = "GameSurge";
+    port = "6667";
+  },
+  { address = "irc.webchat.org"; chatnet = "WebChat"; port = "6667"; },
+  { address = "irc.rizon.net"; chatnet = "Rizon"; port = "6667"; },
+  { address = "irc.link-net.org"; chatnet = "LinkNet"; port = "6667"; },
+  { address = "silc.silcnet.org"; chatnet = "SILC"; port = "706"; }
+);
+
+chatnets = {
+  IRCnet = {
+    type = "IRC";
+    max_kicks = "4";
+    max_msgs = "5";
+    max_whois = "4";
+    max_query_chans = "5";
+  };
+  EFNet = { 
+    type = "IRC";
+    max_kicks = "4";
+    max_msgs = "3";
+    max_whois = "1";
+  };
+  Undernet = {
+    type = "IRC";
+    max_kicks = "1";
+    max_msgs = "3";
+    max_whois = "30";
+  };
+  DALnet = {
+    type = "IRC";
+    max_kicks = "4";
+    max_msgs = "3";
+    max_whois = "30";
+  };
+  QuakeNet = {
+    type = "IRC";
+    max_kicks = "1";
+    max_msgs = "3";
+    max_whois = "30";
+  };
+  OFTC = { 
+    type = "IRC";
+    max_kicks = "1";
+    max_msgs = "3";
+    max_whois = "30";
+  };
+  GameSurge = {
+    type = "IRC";
+    max_kicks = "1";
+    max_msgs = "3";
+    max_whois = "30";
+  };
+  WebChat = {
+    type = "IRC";
+    max_kicks = "1";
+    max_msgs = "3";
+    max_whois = "30";
+  };
+  Rizon = { 
+    type = "IRC";
+    max_kicks = "1";
+    max_msgs = "3";
+    max_whois = "30";
+  };
+  LinkNet = {
+    type = "IRC";
+    max_kicks = "1";
+    max_msgs = "3";
+    max_whois = "30";
+  };
+  SILC = { type = "SILC"; };
+  Ubuntu = { type = "IRC"; };
+};
+
+channels = (
+  { name = "#irssi"; chatnet = "ircnet"; autojoin = "No"; },
+  { name = "silc"; chatnet = "silc"; autojoin = "No"; },
+  {
+    name = "#zsh";
+    chatnet = "freenode";
+    autojoin = "yes";
+    "}\012);\012\012aliases = {\012  J = " = "join";
+    ";\012  WJOIN = " = "join";
+    window = "SERVER";
+    part = ";\012  BYE = ";
+    quit = ";\012  DESCRIBE = ";
+    action = ";\012  DATE = ";
+    time = ";\012  HOST = ";
+    userhost = ";\012  LAST = ";
+    lastlog = ";\012  SAY = ";
+    ";\012  WI = " = "whois";
+    ";\012  WII = " = "whois";
+    0 = ";\012  WW = ";
+    whowas = ";\012  W = ";
+    who = ";\012  N = ";
+    names = ";\012  M = ";
+    msg = ";\012  T = ";
+    topic = ";\012  C = ";
+    clear = ";\012  RESET = ";
+    kick = ";\012  KB = ";
+    kickban = ";\012  KN = ";
+    knockout = ";\012  BANS = ";
+    ban = ";\012  MUB = ";
+    ";\012  UB = " = "unban";
+    ";\012  IG = " = "ignore";
+    ";\012  UNIG = " = "unignore";
+    ";\012  SB = " = "scrollback";
+    ";\012  UMODE = " = "mode";
+    N = ";\012  WC = ";
+    ";\012  WN = " = "window";
+    new = "hide";
+    ";\012  SV = " = "say";
+    J = ( "V" );
+    ";\012  GOTO = " = "sb";
+    goto = ";\012  CHAT = ";
+    dcc = "chat";
+    ";\012  RUN = " = "SCRIPT";
+    LOAD = ";\012  CALC = ";
+    if = "which";
+    then = "echo";
+    awk = "{print \\\"$*=\\\"$$1}";
+    else = "echo";
+    bc = "was";
+    not = "found";
+    fi = ";\012  SBAR = ";
+    STATUSBAR = ";\012  INVITELIST = ";
+    I = ";\012  Q = ";
+    QUERY = ";\012  ";
+    WINDOWS = " = ";
+    set = "reuse_unused_windows";
+    save = ";\012  EXEMPTLIST = ";
+    e = ";\012  ATAG = ";
+    ";\012  UNSET = " = "set";
+    default = ";\012};\012\012statusbar = {\012  # formats:\012  # when using {templates}, the template is shown only if it's argument isn't\012  # empty unless no argument is given. for example {sb} is printed always,\012  # but {sb $T} is printed only if $T isn't empty.\012\012  items = {\012    # start/end text in statusbars\012    barstart = ";
+    ";\012    barend = " = {
+      ";\012\012    topicbarstart = " = {
+        ";\012    topicbarend = " = {
+          ";\012\012    # treated " = "normally";
+          ", you could change the time/user name to whatever\012    time = " = {
+            ";\012    user = " = {
+              sb = {
+                N = { };
+                ";\012\012    # treated specially .. window is printed with non-empty windows,\012    # window_empty is printed with empty windows\012    window = " = {
+                  itemname = { };
+                  ";\012    window_empty = " = {
+                    winref = { };
+                    ";\012    prompt = " = {
+                      ";\012    prompt_empty = " = {
+                        topic = ";\012    topic_empty = ";
+                        Irssi = "v";
+                        org = ";\012\012    # all of these treated specially, they're only displayed when needed\012    lag = ";
+                        sb = "Lag";
+                      };
+                      ";\012    act = " = { sb = "Act"; };
+                      ";\012  };\012\012  # there's two type of statusbars. root statusbars are either at the top\012  # of the screen or at the bottom of the screen. window statusbars are at\012  # the top/bottom of each split window in screen.\012  default = {\012    # the " = "default";
+                      statusbar = " to be displayed at the bottom of the window.\012    # contains all the normal items.\012    window = {\012      disabled = ";
+                      no = ";\012\012      # window, root\012      type = ";
+                      window = ";\012      placement = ";
+                      bottom = ";\012      # we want to be at the bottom always\012      position = ";
+                      1 = ";\012      visible = ";
+                      active = ";\012\012      # list of items in statusbar in the display order\012      items = {\012        barstart = { priority = ";
+                      100 = "; alignment = ";
+                      10 = "; };\012      };\012    };\012\012    # topicbar\012    topic = {\012      type = ";
+                      right = "; };\012      };\012    };\012  };\012};\012settings = {\012  core = {\012    real_name = ";
+                      inactive = ";\012      items = {\012        barstart = { priority = ";
+                      root = ";\012      placement = ";
+                      always = ";\012      items = {\012        topicbarstart = { priority = ";
+                      top = ";\012      position = ";
+                      Jamie = "Kahgee";
+                      ";\012    user_name = " = "veilig";
+                      ";\012    nick = " = "veilig";
+                      ";\012  };\012  " = "fe";
+                      text = " = { actlist_sort = ";
+                      refnum = "; };\012  ";
+                      core = " = { theme = ";
+                    };
+                  };
+                };
+              };
+            };
+          };
+        };
+      };
+    };
+  }
+);
+settings = {
+  core = {
+    real_name = "Jamie Kahgee";
+    user_name = "veilig";
+    nick = "veilig";
+  };
+  "fe-text" = { actlist_sort = "refnum"; };
+};

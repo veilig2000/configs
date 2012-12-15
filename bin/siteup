@@ -1,0 +1,108 @@
+#! /bin/bash
+#
+# =======================
+# Siteup Script 0.1
+# Written by Command Line Idiot
+# http://commandlineidiot.com
+# You may use, modify, and redistribute this script freely
+# Released: August 2007
+# =======================
+
+# =======================
+#	set functions
+# =======================
+#	make_index is the function to create a basic index.html file
+# 	within the documents directory of the new domain. The variable
+# 	for domain name is passed into the file at $dname. You can alter
+#	any of the code between the terms _EOF_ and it will be reflected
+#	in the index.html file.
+
+function make_index
+{
+cat <<- _EOF_
+	<html>
+	<head><title>$dname</title></head>
+	<body>welcome to $dname</body>
+	</html>
+_EOF_
+}
+
+#	make_vhost is the function to create a config file that
+#	Apache2 can interpret. The variable for the domain name is passed
+#	into the file at $dname, and the system-wide variable for username
+#	is passed into the file at $USER. You may wish to replace the
+#	ServerAdmin email address with your own email address. You may alter
+#	any of the code between the terms _EOF_ to build your own preferred
+#	standard config file.
+
+function make_vhost
+{
+cat <<- _EOF_
+	<VirtualHost *:80>
+	        ServerAdmin jamie.kahgee@gmail.com
+            setEnv MAGE_IS_DEVELOPER_MODE ""
+
+	        DocumentRoot /var/www/server/$dname/httpdocs
+	        ServerName $dname
+	        ServerAlias *.$dname
+
+	        DirectoryIndex index.html index.htm index.php
+
+	        ErrorLog /var/www/server/$dname/logs/error.log
+	        CustomLog /var/www/server/$dname/logs/access.log combined
+	</VirtualHost>
+_EOF_
+}
+
+# =======================
+#	     header
+# =======================
+clear
+echo "***      Site Setup      ***"
+
+# =======================
+# set domain name variable
+# =======================
+echo -n "==> Enter new domain name (domain.com): "
+read dname
+echo "Setting up files for $dname"
+
+# =======================
+# create needed directories
+# =======================
+mkdir -vp /var/www/server/$dname/httpdocs
+mkdir -vp /var/www/server/$dname/logs
+touch /var/www/server/$dname/logs/access.log
+echo "created /var/www/server/$dname/logs/access.log"
+touch /var/www/server/$dname/logs/error.log
+echo "created /var/www/server/$dname/logs/error.log"
+
+# =======================
+# build index.html file
+# =======================
+make_index > /var/www/server/$dname/httpdocs/index.html
+echo "created /var/www/server/$dname/httpdocs/index.html"
+
+chown -R jamiek:www-data /var/www/server/$dname
+find /var/www/server/$dname -type d -exec chmod 2770 {} \;
+
+cleandbname=$(echo $site | sed -e 's/^www.//g' | sed -e 's/.com\|.net\|.org$//g' | sed -e 's/[\.-]/_/g')
+echo "create database \`$cleandbname\`;" | mysql
+
+# =======================
+# build vhost config file
+# =======================
+make_vhost > /etc/apache2/sites-available/$dname.conf
+echo "created /etc/apache2/sites-available/$dname.conf"
+
+echo "127.0.0.1 $dname" >> /etc/hosts
+
+a2ensite "$dname.conf"
+service apache2 restart
+
+# =======================
+#    exit
+# =======================
+
+echo "***      Finished setting up files for $dname. Goodbye!"
+exit

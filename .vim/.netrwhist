@@ -1,0 +1,7 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =5
+let g:netrw_dirhist_1='/var/www/server/brontomodules/sites/1.6.2.0/httpdocs/.modman/Bronto/app/code/community/Bronto/Customer/etc'
+let g:netrw_dirhist_2='/var/www/server/brontomodules/sites/1.6.2.0/httpdocs/.modman/Bronto/app/code/community/Bronto/ConflictChecker/Model/Core/Config'
+let g:netrw_dirhist_3='/server/brontomodules/sites/1.7.0.2/httpdocs/.modman/Bronto/app/code/community/Bronto/Customer'
+let g:netrw_dirhist_4='/server/brontomodules/sites/1.7.0.2/httpdocs/.modman/Bronto/app/code/community/Bronto/Customer/Helper'
+let g:netrw_dirhist_5='/server/brontomodules/sites/1.7.0.2/httpdocs/app/code/core/Mage/Core/Model/Email/Template'

@@ -1,0 +1,15 @@
+#! /bin/bash
+
+if [ $# -eq 0 ] ; then
+    echo "Usage: $0 <sitepath>"
+    exit 1
+fi
+
+site=$1
+
+if [ $site == '/home/veilig' ] ; then
+    echo 'Trying to run in home directory!'
+    exit 1
+fi
+
+/usr/bin/ctags -R --php-kinds=-j --fields=+ias --extra=+q $site

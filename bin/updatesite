@@ -1,0 +1,22 @@
+#! /bin/bash
+
+if [ $# -eq 0 ] ; then
+    echo "Usage: $0 <sitepath>"
+    exit 1
+fi
+
+site=$1
+echo $site
+
+if [ $site == '/home/jamiek' ]
+    then
+        echo 'Trying to run in home directory'
+        exit 1;
+fi
+
+mkdir -v "$site/httpdocs"
+find $site -maxdepth 1 -type d -not -name httpdocs -not -name . -exec mv {} "$site/httpdocs" \;
+find $site -maxdepth 1 -type f -exec mv {} "$site/httpdocs" \;
+mkdir -v "$site/logs"
+echo "***      Finished setting updating $site. Goodbye!"
+exit

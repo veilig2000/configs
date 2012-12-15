@@ -1,0 +1,13 @@
+#! /bin/bash
+
+if [ $# -eq 0 ] ; then
+    echo "Usage: $0 <Database>"
+    exit 1
+fi
+
+file="`date +%F-%T`.sql.gz"
+echo $file
+echo "***      Dumping Database ($1) to file: $file"
+mysqldump $1 | gzip > $file
+echo "***      Finished creating dump, Goodbye!"
+exit
