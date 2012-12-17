@@ -42,14 +42,14 @@ cat <<- _EOF_
 	        ServerAdmin jamie.kahgee@gmail.com
             setEnv MAGE_IS_DEVELOPER_MODE ""
 
-	        DocumentRoot /var/www/server/$dname/httpdocs
+	        DocumentRoot $httpdocsDir
 	        ServerName $dname
 	        ServerAlias *.$dname
 
 	        DirectoryIndex index.html index.htm index.php
 
-	        ErrorLog /var/www/server/$dname/logs/error.log
-	        CustomLog /var/www/server/$dname/logs/access.log combined
+	        ErrorLog ${logsDir}error.log
+	        CustomLog ${logsDir}access.log combined
 	</VirtualHost>
 _EOF_
 }
@@ -70,23 +70,48 @@ echo "Setting up files for $dname"
 # =======================
 # create needed directories
 # =======================
-mkdir -vp /var/www/server/$dname/httpdocs
-mkdir -vp /var/www/server/$dname/logs
-touch /var/www/server/$dname/logs/access.log
-echo "created /var/www/server/$dname/logs/access.log"
-touch /var/www/server/$dname/logs/error.log
-echo "created /var/www/server/$dname/logs/error.log"
+directory="/var/www/server/$dname/"
+httpdocsDir="${directory}httpdocs/"
+logsDir="${directory}logs/"
 
+mkdir -vp $httpdocsDir
+mkdir -vp $logsDir
+
+touch ${logsDir}access.log
+echo "created ${logsDir}access.log"
+touch ${logsDir}error.log
+echo "created ${logsDir}error.log"
+
+while true; do
+    read -p "Is this a SVN repository? " yn
+    case $yn in
+        [Yy]* ) echo 'yes'; break;;
+        [Nn]* ) echo 'no'; break;;
+        * ) echo "Please answer yes or no.";;
+    esac
+done
+
+if [ 'yes' == $yn ]; then
+    read -p "Please input SVN repo: " repo
+
+    svn co svn://svn.atlanticbt.com/$repo $httpdocsDir
+fi
+
+if [ 'no' == $yn ]; then
+    read -p "Please input GIT repo: " repo
+
+    git clone abtgit:$repo $httpdocsDir
+fi
 # =======================
 # build index.html file
 # =======================
-make_index > /var/www/server/$dname/httpdocs/index.html
-echo "created /var/www/server/$dname/httpdocs/index.html"
+make_index > ${httpdocs}index.html
+echo "created ${httpdocs}index.html"
 
-chown -R jamiek:www-data /var/www/server/$dname
-find /var/www/server/$dname -type d -exec chmod 2770 {} \;
+chown -R jamiek:www-data $directory
+find $directory -type d -exec chmod 2770 {} \;
 
-cleandbname=$(echo $site | sed -e 's/^www.//g' | sed -e 's/.com\|.net\|.org$//g' | sed -e 's/[\.-]/_/g')
+cleandbname=$(echo $dname | sed -e 's/^www.//g' | sed -e 's/.com\|.net\|.org$//g' | sed -e 's/[\.-]/_/g')
 echo "create database \`$cleandbname\`;" | mysql
 
 # =======================
