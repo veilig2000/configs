@@ -11,8 +11,8 @@
  * ==
  * == Chrome:
  * == 1.) In a chrome tab, browse to the extensions page: chrome://chrome/extensions
- * == 1.) Drag file from explorer window onto extensions tab.
- * == 2.) Refresh portal window/tab and use
+ * == 2.) Drag file from explorer window onto extensions tab.
+ * == 3.) Refresh portal window/tab and use
  * ==
  * == FireFox:
  * == 1.) Install Greasemonkey extension (http://www.greasespot.net/)
@@ -24,7 +24,8 @@
  * ===============================
  */
 
-// a function that loads jQuery and calls a callback function when jQuery has finished loading
+// a function that loads jQuery and calls a callback
+// function when jQuery has finished loading
 function addJQuery(callback) {
 	var script = document.createElement("script");
 	script.setAttribute("src", "http://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js");
