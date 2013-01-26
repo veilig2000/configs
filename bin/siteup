@@ -21,8 +21,8 @@ function make_index
 {
 cat <<- _EOF_
 	<html>
-	<head><title>$dname</title></head>
-	<body>welcome to $dname</body>
+        <head><title>$dname</title></head>
+        <body>welcome to $dname</body>
 	</html>
 _EOF_
 }
@@ -39,17 +39,17 @@ function make_vhost
 {
 cat <<- _EOF_
 	<VirtualHost *:80>
-	        ServerAdmin jamie.kahgee@gmail.com
-            setEnv MAGE_IS_DEVELOPER_MODE ""
+	    ServerAdmin jamie.kahgee@gmail.com
+        setEnv MAGE_IS_DEVELOPER_MODE ""
 
-	        DocumentRoot /var/www/server/$dname/httpdocs
-	        ServerName $dname
-	        ServerAlias *.$dname
+	    DocumentRoot $httpdocsDir
+	    ServerName $dname
+	    ServerAlias *.$dname
 
-	        DirectoryIndex index.html index.htm index.php
+	    DirectoryIndex index.html index.htm index.php
 
-	        ErrorLog /var/www/server/$dname/logs/error.log
-	        CustomLog /var/www/server/$dname/logs/access.log combined
+	    ErrorLog ${logsDir}error.log
+	    CustomLog ${logsDir}access.log combined
 	</VirtualHost>
 _EOF_
 }
@@ -70,23 +70,66 @@ echo "Setting up files for $dname"
 # =======================
 # create needed directories
 # =======================
-mkdir -vp /var/www/server/$dname/httpdocs
-mkdir -vp /var/www/server/$dname/logs
-touch /var/www/server/$dname/logs/access.log
-echo "created /var/www/server/$dname/logs/access.log"
-touch /var/www/server/$dname/logs/error.log
-echo "created /var/www/server/$dname/logs/error.log"
+directory="/server/$dname/"
+httpdocsDir="${directory}httpdocs/"
+logsDir="${directory}logs/"
+
+
+echo "Is this a SVN repository?"
+select result in Yes No Cancel
+do
+    if [[ "Yes" == $result ]]; then
+        repoType="svn"
+        echo "Please input SVN repo:"
+        read -p "svn://svn.atlanticbt.com/" repo
+        echo $repo
+        break
+    elif [[ "No" == $result ]]; then
+        echo "Is this a GIT repository?"
+        select result in Yes No Cancel
+        do
+            if [[ "Yes" == $result ]]; then
+                repoType="git"
+                echo "Please input GIT repo:"
+                read -p "git clone abtgit:" repo
+                echo $repo
+                break
+            elif [[ "No" == $result ]]; then
+                break
+            else
+                exit 0
+            fi
+        done
+        break
+    else
+        exit 0
+    fi
+done
+
+mkdir -vp $httpdocsDir
+mkdir -vp $logsDir
+
+touch ${logsDir}access.log
+echo "created ${logsDir}access.log"
+touch ${logsDir}error.log
+echo "created ${logsDir}error.log"
+
+if [[ 'svn' == $repoType ]]; then
+    svn co svn://svn.atlanticbt.com/$repo $httpdocsDir
+elif [[ 'git' == $repoType ]]; then
+    git clone abtgit:$repo $httpdocsDir
+fi
 
 # =======================
 # build index.html file
 # =======================
-make_index > /var/www/server/$dname/httpdocs/index.html
-echo "created /var/www/server/$dname/httpdocs/index.html"
+make_index > ${httpdocs}index.html
+echo "created ${httpdocs}index.html"
+chown -R $SUDO_USER:www-data $directory
 
-chown -R jamiek:www-data /var/www/server/$dname
-find /var/www/server/$dname -type d -exec chmod 2770 {} \;
+find $directory -type d -exec chmod 2770 {} \;
 
-cleandbname=$(echo $site | sed -e 's/^www.//g' | sed -e 's/.com\|.net\|.org$//g' | sed -e 's/[\.-]/_/g')
+cleandbname=$(echo $dname | awk '{print tolower($0)}' | sed -e 's/^www.//g' | sed -e 's/.com\|.net\|.org$//g' | sed -e 's/[\.-]/_/g')
 echo "create database \`$cleandbname\`;" | mysql
 
 # =======================
