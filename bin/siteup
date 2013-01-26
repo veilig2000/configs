@@ -114,18 +114,18 @@ echo "created ${logsDir}access.log"
 touch ${logsDir}error.log
 echo "created ${logsDir}error.log"
 
-if [[ 'svn' == $repoType ]]; then
-    svn co svn://svn.atlanticbt.com/$repo $httpdocsDir
-elif [[ 'git' == $repoType ]]; then
-    git clone abtgit:$repo $httpdocsDir
-fi
-
 # =======================
 # build index.html file
 # =======================
 make_index > ${httpdocs}index.html
 echo "created ${httpdocs}index.html"
 chown -R $SUDO_USER:www-data $directory
+
+if [[ 'svn' == $repoType ]]; then
+    (sudo -u $SUDO_USER svn co svn://svn.atlanticbt.com/$repo $httpdocsDir)
+elif [[ 'git' == $repoType ]]; then
+    (sudo -u $SUDO_USER git clone abtgit:$repo $httpdocsDir)
+fi
 
 find $directory -type d -exec chmod 2770 {} \;
 
