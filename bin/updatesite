@@ -8,10 +8,9 @@ fi
 site=$1
 echo $site
 
-if [ $site == '/home/jamiek' ]
-    then
-        echo 'Trying to run in home directory'
-        exit 1;
+if [ $site == $HOME ] || [ '.' == $site -a $HOME == `pwd` ] ; then
+    echo 'Trying to run in home directory'
+    exit 1;
 fi
 
 mkdir -v "$site/httpdocs"
