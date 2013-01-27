@@ -7,7 +7,7 @@ fi
 
 site=$1
 
-if [ $site == '/home/veilig' ] ; then
+if [ $site == $HOME ] || [ '.' == $site -a $HOME == `pwd` ]; then
     echo 'Trying to run in home directory!'
     exit 1
 fi
