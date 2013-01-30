@@ -66,16 +66,28 @@ clear
 echo "***      Site Setup      ***"
 
 # =======================
+# find path to the server
+# =======================
+echo -n "==> What is the path to the server directory: "
+read server
+
+if [ "$server" = "" ]; then
+    echo "Invalid server path!"
+    exit
+fi
+
+if [ `echo "$server" | grep "[^/]$"` ]; then
+    server="$server/"
+fi
+
+# =======================
 # set domain name variable
 # =======================
 echo -n "==> Enter new domain name (domain.com): "
 read dname
 echo "Setting up files for $dname"
 
-# =======================
-# create needed directories
-# =======================
-directory="/server/$dname/"
+directory="$server$dname/"
 httpdocsDir="${directory}httpdocs/"
 logsDir="${directory}logs/"
 
@@ -134,7 +146,7 @@ fi
 
 find $directory -type d -exec chmod 2770 {} \;
 
-cleandbname=$(echo $dname | awk '{print tolower($0)}' | sed -e 's/^www.//g' | sed -e 's/.com\|.net\|.org$//g' | sed -e 's/[\.-]/_/g')
+cleandbname=$(echo $dname | awk '{print tolower($0)}' | sed -e 's/^www.//g' | sed -e 's/(.com\|.net\|.org)$//g' | sed -e 's/[\.-]/_/g')
 echo "create database \`$cleandbname\`;" | mysql
 
 # =======================
