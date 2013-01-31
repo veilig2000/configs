@@ -147,7 +147,9 @@ fi
 find $directory -type d -exec chmod 2770 {} \;
 
 cleandbname=$(echo $dname | awk '{print tolower($0)}' | sed -e 's/^www.//g' | sed -e 's/(.com\|.net\|.org)$//g' | sed -e 's/[\.-]/_/g')
+cleandbname_ci="${cleandbname}_ci"
 echo "create database \`$cleandbname\`;" | mysql
+echo "create database \`$cleandbname_ci\`;" | mysql
 
 # =======================
 # build vhost config file
