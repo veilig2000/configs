@@ -5,7 +5,7 @@ if [ $# -eq 0 ] ; then
     exit 1
 fi
 
-file="`date +%F-%T`.sql.gz"
+file="`date +%F-%T`.local.sql.gz"
 echo $file
 echo "***      Dumping Database ($1) to file: $file"
 mysqldump $1 | gzip > $file
