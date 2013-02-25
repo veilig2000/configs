@@ -1,0 +1,13 @@
+#! /bin/bash
+
+if [ $# -ne 3 ] ; then
+    echo "Usage: $0 <user> <host> <database>"
+    exit 1
+fi
+
+file="`date +%F-%T`.remote.sql.gz"
+echo $file
+echo "***      Dumping Database ($1) to file: $file"
+mysqldump -u $1 -h $2 -p $3 | gzip > $file
+echo "***      Finished creating dump, Goodbye!"
+exit
